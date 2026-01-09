@@ -1,6 +1,12 @@
 <Solution>
-  <Project Path="ElectricStoreProject.Application/ElectricStoreProject.Application.csproj" />
-  <Project Path="ElectricStoreProject.Domain/ElectricStoreProject.Domain.csproj" />
-  <Project Path="ElectricStoreProject.Infrastructure/ElectricStoreProject.Infrastructure.csproj" />
-  <Project Path="ElectricStoreProject/ElectricStoreProject.WebApi.csproj" />
+  <Folder Name="/common/">
+    <Project Path="Common/Common.csproj" />
+  </Folder>
+  <Folder Name="/Solution items/" />
+  <Folder Name="/src/">
+    <Project Path="ElectricStoreProject.Application/ElectricStoreProject.Application.csproj" />
+    <Project Path="ElectricStoreProject.Domain/ElectricStoreProject.Domain.csproj" />
+    <Project Path="ElectricStoreProject.Infrastructure/ElectricStoreProject.Infrastructure.csproj" />
+    <Project Path="ElectricStoreProject/ElectricStoreProject.WebApi.csproj" />
+  </Folder>
 </Solution>
