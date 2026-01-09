@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="ElectricStoreProject.Application/ElectricStoreProject.Application.csproj" />
+  <Project Path="ElectricStoreProject.Domain/ElectricStoreProject.Domain.csproj" />
+  <Project Path="ElectricStoreProject.Infrastructure/ElectricStoreProject.Infrastructure.csproj" />
+  <Project Path="ElectricStoreProject/ElectricStoreProject.WebApi.csproj" />
+</Solution>
