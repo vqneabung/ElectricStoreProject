@@ -10,4 +10,8 @@
     <Folder Include="Interface\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ElectricStoreProject.Domain\ElectricStoreProject.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

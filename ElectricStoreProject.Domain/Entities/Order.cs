@@ -12,6 +12,8 @@ namespace ElectricStoreProject.Domain.Entities
 
         public OrderStatus Status { get; set; }
 
+        public IEnumerable<OrderDetail>? OrderDetails { get; set; } = new List<OrderDetail>();
+
     }
 
     public enum OrderStatus

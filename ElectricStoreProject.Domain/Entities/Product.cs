@@ -20,9 +20,9 @@ namespace ElectricStoreProject.Domain.Entities
 
         public int StockQuantity { get; set; }
 
-        public DateTime CreatedAt { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public DateTime LastUpdatedAt { get; set; }
+        public DateTime LastUpdatedAt { get; set; } = DateTime.Now;
 
         public bool IsActive { get; set; }
 

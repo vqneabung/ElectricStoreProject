@@ -10,9 +10,11 @@ namespace ElectricStoreProject.Domain.Entities
 
         public Guid OrderId { get; set; }
 
-        public Guid ProductId { get; set; }
-
         public int Quantity { get; set; }
+
+        public IEnumerable<Product>? Products { get; set; }
+
+        public Order? Orders { get; set; }
 
     }
 }
