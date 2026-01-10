@@ -2,7 +2,9 @@
   <Folder Name="/common/">
     <Project Path="Common/Common.csproj" />
   </Folder>
-  <Folder Name="/Solution items/" />
+  <Folder Name="/Solution items/">
+    <File Path=".env" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="ElectricStoreProject.Application/ElectricStoreProject.Application.csproj" />
     <Project Path="ElectricStoreProject.Domain/ElectricStoreProject.Domain.csproj" />
