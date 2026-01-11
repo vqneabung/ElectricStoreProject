@@ -19,5 +19,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\ElectricStoreProject.Domain\ElectricStoreProject.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
  

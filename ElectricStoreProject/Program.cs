@@ -1,6 +1,19 @@
+using DotNetEnv;
+using DotNetEnv.Configuration;
+using ElectricStoreProject.Infrastructure.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration
+    .AddDotNetEnv(".env", LoadOptions.TraversePath()) // Simply add the DotNetEnv configuration source!
+    .Build();
+}
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
+
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
