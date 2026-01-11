@@ -12,7 +12,7 @@ namespace ElectricStoreProject.Domain.Entities
 
         public string? Name { get; set; }
 
-        public string? Category { get; set; }
+        public Guid? CategoryId { get; set; }
 
         public string? Description { get; set; }
 
@@ -25,6 +25,8 @@ namespace ElectricStoreProject.Domain.Entities
         public DateTime LastUpdatedAt { get; set; } = DateTime.Now;
 
         public bool IsActive { get; set; }
+
+        public virtual Category? Categories { get; set; }
 
     }
 }
