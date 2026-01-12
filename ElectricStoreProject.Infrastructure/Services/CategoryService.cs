@@ -11,6 +11,8 @@ namespace ElectricStoreProject.Infrastructure.Services
 {
     public class CategoryService : ICategoryService
     {
+
+
         public Task<OneOf<BaseSuccess, BaseError>> CreateCategoryAsync(CommonCategoryRequest createCategoryRequest)
         {
             throw new NotImplementedException();
