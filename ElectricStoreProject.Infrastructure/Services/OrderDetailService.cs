@@ -1,6 +1,9 @@
 ﻿using Common;
 using ElectricStoreProject.Application.DTOs.Request;
+using ElectricStoreProject.Application.DTOs.Response;
+using ElectricStoreProject.Application.Interface.Repositories;
 using ElectricStoreProject.Application.Interface.Services;
+using ElectricStoreProject.Domain.Entities;
 using OneOf;
 using System;
 using System.Collections.Generic;
@@ -10,34 +13,99 @@ namespace ElectricStoreProject.Infrastructure.Services
 {
     public class OrderDetailService : IOrderDetailService
     {
-        public Task<OneOf<BaseSuccess, BaseError>> CreateOrderDetailAsync(CommonOrderDetailRequest createBlogRequest)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public OrderDetailService(IUnitOfWork unitOfWork)
         {
-            throw new NotImplementedException();
+            _unitOfWork = unitOfWork;
         }
 
-        public Task<OneOf<BaseSuccess, BaseError>> DeleteOrderDetailAsync(Guid blogId)
+        public async Task<OneOf<BaseSuccess, BaseError>> CreateOrderDetailAsync(CommonOrderDetailRequest createBlogRequest)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _unitOfWork.OrderDetailRepository.AddAsync(new()
+                {
+                    OrderId = createBlogRequest.OrderId,
+                    Quantity = createBlogRequest.Quantity
+                });
+
+                return new BaseSuccess { Message = "Order detail created successfully." };
+            }
+            catch (Exception ex)
+            {
+                return new BaseError { Message = "An error occurred while creating the order detail.", Errors = ex.Message };
+            }
         }
 
-        public Task<IEnumerable<CommonOrderDetailRequest>> GetAllOrderDetailAsync()
+        public async Task<OneOf<BaseSuccess, BaseError>> DeleteOrderDetailAsync(Guid orderDetailId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(od => od.OrderDetailId == orderDetailId);
+                if (orderDetail == null)
+                {
+                    return new BaseError { Message = "Order detail not found." };
+                }
+                _unitOfWork.OrderDetailRepository.Remove(orderDetail);
+                return new BaseSuccess { Message = "Order detail deleted successfully." };
+            }
+            catch (Exception ex)
+            {
+                return new BaseError { Message = "An error occurred while deleting the order detail.", Errors = ex.Message };
+            }
         }
 
-        public Task<OneOf<CommonOrderDetailRequest, BaseError>> GetOrderDetailByIdAsync(Guid OrderDetailId)
+        public async Task<IEnumerable<CommonOrderDetailResponse>> GetAllOrderDetailAsync()
         {
-            throw new NotImplementedException();
+            var orderDetails = await _unitOfWork.OrderDetailRepository.GetAllAsync();
+
+            return [..orderDetails.Select(od => new CommonOrderDetailResponse{
+                OrderId = od.OrderId,
+                Quantity = od.Quantity
+            })];
         }
 
-        public Task<IEnumerable<CommonOrderDetailRequest>> GetOrderDetailsByCategoryAsync(Guid categoryId)
+        public async Task<OneOf<CommonOrderDetailResponse, BaseError>> GetOrderDetailByIdAsync(Guid OrderDetailId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(od => od.OrderDetailId == OrderDetailId);
+                if (orderDetail == null)
+                {
+                    return new BaseError { Message = "Order detail not found." };
+                }
+                return new CommonOrderDetailResponse
+                {
+                    OrderId = orderDetail.OrderId,
+                    Quantity = orderDetail.Quantity
+                };
+            }
+            catch (Exception ex)
+            {
+                return new BaseError { Message = "An error occurred while retrieving the order detail.", Errors = ex.Message };
+            }
         }
 
-        public Task<OneOf<BaseSuccess, BaseError>> UpdateOrderDetailAsync(Guid id, CommonOrderDetailRequest updateBlogRequest)
+        public async Task<OneOf<BaseSuccess, BaseError>> UpdateOrderDetailAsync(Guid id, CommonOrderDetailRequest updateBlogRequest)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(od => od.OrderDetailId == id);
+                if (orderDetail == null)
+                {
+                    return new BaseError { Message = "Order detail not found." };
+                }
+                orderDetail.OrderId = updateBlogRequest.OrderId;
+                orderDetail.Quantity = updateBlogRequest.Quantity;
+                _unitOfWork.OrderDetailRepository.Update(orderDetail);
+                return new BaseSuccess { Message = "Order detail updated successfully." };
+            }
+            catch (Exception ex
+            )
+            {
+                return new BaseError { Message = "An error occurred while updating the order detail.", Errors = ex.Message };
+            }
         }
     }
 }

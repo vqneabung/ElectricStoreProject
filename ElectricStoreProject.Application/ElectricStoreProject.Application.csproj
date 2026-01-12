@@ -11,4 +11,8 @@
     <ProjectReference Include="..\ElectricStoreProject.Domain\ElectricStoreProject.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Utils\" />
+  </ItemGroup>
+
 </Project>

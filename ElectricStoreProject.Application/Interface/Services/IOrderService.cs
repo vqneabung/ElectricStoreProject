@@ -1,5 +1,6 @@
 ﻿using Common;
 using ElectricStoreProject.Application.DTOs.Request;
+using ElectricStoreProject.Application.DTOs.Response;
 using OneOf;
 using System;
 using System.Collections.Generic;
@@ -9,16 +10,16 @@ namespace ElectricStoreProject.Application.Interface.Services
 {
     public interface IOrderService
     {
-        Task<IEnumerable<CommonOrderRequest>> GetAllOrderAsync();
+        Task<IEnumerable<CommonOrderResponse>> GetAllOrderAsync();
 
-        Task<OneOf<CommonOrderRequest, BaseError>> GetOrderByIdAsync(Guid orderId);
+        Task<OneOf<CommonOrderResponse, BaseError>> GetOrderByIdAsync(Guid orderId);
 
-        Task<IEnumerable<CommonOrderRequest>> GetOrdersByCategoryAsync(Guid categoryId);
+        Task<IEnumerable<CommonOrderResponse>> GetOrdersByOrderAsync(Guid OrderId);
 
-        Task<OneOf<BaseSuccess, BaseError>> UpdateOrderAsync(Guid id, CommonOrderRequest updateCategoryRequest);
+        Task<OneOf<BaseSuccess, BaseError>> UpdateOrderAsync(Guid id, CommonOrderRequest updateOrderRequest);
 
-        Task<OneOf<BaseSuccess, BaseError>> CreateCategoryAsync(CommonOrderRequest createCategoryRequest);
+        Task<OneOf<BaseSuccess, BaseError>> CreateOrderAsync(CreateOrderRequest createOrderRequest);
 
-        Task<OneOf<BaseSuccess, BaseError>> DeleteCategoryAsync(Guid categoryId);
+        Task<OneOf<BaseSuccess, BaseError>> DeleteOrderAsync(Guid OrderId);
     }
 }

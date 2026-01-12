@@ -10,5 +10,7 @@ namespace ElectricStoreProject.Application.DTOs.Response
 
         public OrderStatus Status { get; set; }
 
+        public IEnumerable<CommonOrderDetailResponse> OrderDetails { get; set; } = new List<CommonOrderDetailResponse>();
+
     }
 }

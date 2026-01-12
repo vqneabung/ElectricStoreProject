@@ -1,7 +1,10 @@
 ﻿using Common;
 using Common.Repository;
 using ElectricStoreProject.Application.DTOs.Request;
+using ElectricStoreProject.Application.DTOs.Response;
+using ElectricStoreProject.Application.Interface.Repositories;
 using ElectricStoreProject.Application.Interface.Services;
+using ElectricStoreProject.Domain.Entities;
 using OneOf;
 using System;
 using System.Collections.Generic;
@@ -12,35 +15,130 @@ namespace ElectricStoreProject.Infrastructure.Services
     public class CategoryService : ICategoryService
     {
 
+        private readonly IUnitOfWork _unitOfWork;
 
-        public Task<OneOf<BaseSuccess, BaseError>> CreateCategoryAsync(CommonCategoryRequest createCategoryRequest)
+        public CategoryService(IUnitOfWork unitOfWork)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<OneOf<BaseSuccess, BaseError>> DeleteCategoryAsync(Guid CategoryId)
-        {
-            throw new NotImplementedException();
+            _unitOfWork = unitOfWork;
         }
 
-        public Task<IEnumerable<CommonCategoryRequest>> GetAllCategoryAsync()
+        public async Task<OneOf<BaseSuccess, BaseError>> CreateCategoryAsync(CommonCategoryRequest createCategoryRequest)
         {
-            throw new NotImplementedException();
+
+            var category = new Category
+            {
+                Name = createCategoryRequest.Name
+            };
+
+            try
+            {
+                await _unitOfWork.CategoryRepository.AddAsync(category);
+                var saved = await _unitOfWork.CategoryRepository.SaveChangesAsync();
+                if (saved)
+                {
+                    return new BaseSuccess();
+                }
+                else
+                {
+                    return new BaseError { Message = "Failed to save category." };
+                }
+            }
+            catch (Exception ex)
+            {
+                return new BaseError { Message = ex.Message };
+            }
         }
 
-        public Task<OneOf<CommonCategoryRequest, BaseError>> GetCategoryByIdAsync(Guid CategoryId)
+        public async Task<OneOf<BaseSuccess, BaseError>> DeleteCategoryAsync(Guid categoryId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var category = await _unitOfWork.CategoryRepository.GetByIdAsync(c => c.CategoryId == categoryId);
+
+                if (category == null)
+                {
+                    return new BaseError { Message = "Category not found." };
+                }
+
+                _unitOfWork.CategoryRepository.Remove(category);
+                var saved = await _unitOfWork.CategoryRepository.SaveChangesAsync();
+
+                return saved ? new BaseSuccess() : new BaseError { Message = "Failed to delete category." };
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseError { Message = ex.Message };
+            }
         }
-        
-        public Task<IEnumerable<CommonCategoryRequest>> GetCategorysByCategoryAsync(Guid categoryId)
+
+        public async Task<IEnumerable<CommonCategoryResponse>> GetAllCategoryAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
+
+                return categories.Select(c => new CommonCategoryResponse
+                {
+                    Name = c.Name
+                });
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while retrieving categories.", ex);
+            }
         }
+
+        public async Task<OneOf<CommonCategoryResponse, BaseError>> GetCategoryByIdAsync(Guid categoryId)
+        {
+            try
+            {
+                var category = await _unitOfWork.CategoryRepository.GetByIdAsync(c => c.CategoryId == categoryId);
+                return category != null
+                    ? new CommonCategoryResponse
+                    {
+                        Name = category.Name
+                    }
+                    : new BaseError { Message = "Category not found." };
+
+            }
+            catch (Exception ex)
+            {
+                return new BaseError { Message = ex.Message };
+            }
+        }
+
 
         public Task<OneOf<BaseSuccess, BaseError>> UpdateCategoryAsync(Guid id, CommonCategoryRequest updateCategoryRequest)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var categoryTask = _unitOfWork.CategoryRepository.GetByIdAsync(c => c.CategoryId == id);
+                categoryTask.Wait();
+                var category = categoryTask.Result;
+                if (category == null)
+                {
+                    return Task.FromResult<OneOf<BaseSuccess, BaseError>>(new BaseError { Message = "Category not found." });
+                }
+                category.Name = updateCategoryRequest.Name;
+                _unitOfWork.CategoryRepository.Update(category);
+                var saveTask = _unitOfWork.CategoryRepository.SaveChangesAsync();
+                saveTask.Wait();
+                if (saveTask.Result)
+                {
+                    return Task.FromResult<OneOf<BaseSuccess, BaseError>>(new BaseSuccess());
+                }
+                else
+                {
+                    return Task.FromResult<OneOf<BaseSuccess, BaseError>>(new BaseError { Message = "Failed to update category." });
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return Task.FromResult<OneOf<BaseSuccess, BaseError>>(new BaseError { Message = ex.Message });
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Common;
 using ElectricStoreProject.Application.DTOs.Request;
+using ElectricStoreProject.Application.DTOs.Response;
 using OneOf;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,9 @@ namespace ElectricStoreProject.Application.Interface.Services
     public interface ICategoryService
     {
 
-        Task<IEnumerable<CommonCategoryRequest>> GetAllCategoryAsync();
+        Task<IEnumerable<CommonCategoryResponse>> GetAllCategoryAsync();
 
-        Task<OneOf<CommonCategoryRequest, BaseError>> GetCategoryByIdAsync(Guid categoryId);
-
-        Task<IEnumerable<CommonCategoryRequest>> GetCategorysByCategoryAsync(Guid categoryId);
+        Task<OneOf<CommonOrderDetailResponse, BaseError>> GetCategoryByIdAsync(Guid categoryId);
 
         Task<OneOf<BaseSuccess, BaseError>> UpdateCategoryAsync(Guid id, CommonCategoryRequest updateCategoryRequest);
 

@@ -20,12 +20,12 @@ namespace ElectricStoreProject.Infrastructure.Repositories
             _orderDetailRepository = orderDetailRepository;
         }
 
-        public IProductRepository Products => _productRepository;
+        public IProductRepository ProductRepository => _productRepository;
 
-        public ICategoryRepository Categories => _categoryRepository;
+        public ICategoryRepository CategoryRepository => _categoryRepository;
 
-        public IOrderDetailRepository OrderDetails => _orderDetailRepository;
+        public IOrderDetailRepository OrderDetailRepository => _orderDetailRepository;
 
-        public IOrderRepository Orders => _orderRepository;
+        public IOrderRepository OrderRepository => _orderRepository;
     }
 }
