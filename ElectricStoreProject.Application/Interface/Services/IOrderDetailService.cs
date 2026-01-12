@@ -11,7 +11,7 @@ namespace ElectricStoreProject.Application.Interface.Services
     {
         Task<IEnumerable<CommonOrderDetailRequest>> GetAllOrderDetailAsync();
 
-        Task<OneOf<CommonOrderDetailRequest, BaseError>> GetOrderDetailByIdAsync(Guid OrderDetailId);
+        Task<OneOf<CommonOrderDetailRequest, BaseError>> GetOrderDetailByIdAsync(Guid orderDetailId);
 
         Task<IEnumerable<CommonOrderDetailRequest>> GetOrderDetailsByCategoryAsync(Guid categoryId);
 
