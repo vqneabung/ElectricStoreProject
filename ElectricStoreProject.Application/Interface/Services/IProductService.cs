@@ -16,11 +16,11 @@ namespace ElectricStoreProject.Application.Interface.Services
 
         Task<IEnumerable<CommonProductRequest>> GetProductsByCategoryAsync(Guid categoryId);
 
-        Task<OneOf<BaseSuccess, BaseError>> UpdateProductAsync(Guid id, CommonProductRequest updateBlogRequest);
+        Task<OneOf<BaseSuccess, BaseError>> UpdateProductAsync(Guid id, CommonProductRequest updateProductRequest);
 
-        Task<OneOf<BaseSuccess, BaseError>> CreateBlogAsync(CommonProductRequest createBlogRequest);
+        Task<OneOf<BaseSuccess, BaseError>> CreateProductAsync(CommonProductRequest createProductRequest);
 
-        Task<OneOf<BaseSuccess, BaseError>> DeleteBlogAsync(Guid blogId);
+        Task<OneOf<BaseSuccess, BaseError>> DeleteProductAsync(Guid productId);
 
     }
 }
