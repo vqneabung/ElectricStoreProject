@@ -1,0 +1,48 @@
+﻿using Common.Extensions;
+using ElectricStoreProject.Application.DTOs.Response;
+using ElectricStoreProject.Application.Interface.Services;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace ElectricStoreProject.WebApi.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ProductsController : ControllerBaseWithBaseReponse
+    {
+        private readonly IServiceProviders _serviceProviders;
+
+        public ProductsController(IServiceProviders serviceProviders)
+        {
+            _serviceProviders = serviceProviders;
+        }
+
+        [HttpGet]
+        public async Task<BaseActionResult<IEnumerable<CommonProductResponse>>> GetAlls()
+        {
+            try
+            {
+                var result = await _serviceProviders.ProductService.GetAllProductAsync();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<BaseActionResult<CommonProductResponse>> GetById(int id)
+        {
+            try
+            {
+                var result = await _serviceProviders.ProductService.GetProductByIdAsync(Guid.Parse(id.ToString()));
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+    }
+}

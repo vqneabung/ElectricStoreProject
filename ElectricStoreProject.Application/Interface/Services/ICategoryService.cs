@@ -13,7 +13,7 @@ namespace ElectricStoreProject.Application.Interface.Services
 
         Task<IEnumerable<CommonCategoryResponse>> GetAllCategoryAsync();
 
-        Task<OneOf<CommonOrderDetailResponse, BaseError>> GetCategoryByIdAsync(Guid categoryId);
+        Task<OneOf<CommonCategoryResponse, BaseError>> GetCategoryByIdAsync(Guid categoryId);
 
         Task<OneOf<BaseSuccess, BaseError>> UpdateCategoryAsync(Guid id, CommonCategoryRequest updateCategoryRequest);
 

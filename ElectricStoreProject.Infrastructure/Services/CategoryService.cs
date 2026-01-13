@@ -9,6 +9,7 @@ using OneOf;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ElectricStoreProject.Infrastructure.Services
 {
@@ -140,5 +141,6 @@ namespace ElectricStoreProject.Infrastructure.Services
                 return Task.FromResult<OneOf<BaseSuccess, BaseError>>(new BaseError { Message = ex.Message });
             }
         }
+
     }
 }

@@ -1,3 +1,4 @@
+using Common.Middlewares;
 using DotNetEnv;
 using DotNetEnv.Configuration;
 using ElectricStoreProject.Infrastructure.Extensions;
@@ -12,7 +13,6 @@ if (builder.Environment.IsDevelopment())
     .Build();
 }
 builder.Services.AddInfrastructureServices(builder.Configuration);
-
 
 
 builder.Services.AddControllers();
@@ -30,6 +30,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
