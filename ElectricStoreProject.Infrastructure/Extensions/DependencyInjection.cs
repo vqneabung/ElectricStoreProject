@@ -1,5 +1,11 @@
 ﻿using Common.Extensions;
+using Common.Repository;
+using ElectricStoreProject.Application.Interface.Repositories;
+using ElectricStoreProject.Application.Interface.Services;
+using ElectricStoreProject.Domain.Entities;
 using ElectricStoreProject.Infrastructure.Data;
+using ElectricStoreProject.Infrastructure.Repositories;
+using ElectricStoreProject.Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,6 +20,18 @@ namespace ElectricStoreProject.Infrastructure.Extensions
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {   
             services.AddBaseServicesWithDbContext<ElectricStoreDBContext>(configuration);
+
+            services.AddScoped<IGenericRepository<Product>, ProductRepository>();
+            services.AddScoped<IGenericRepository<Category>, CategoryRepository>();
+            services.AddScoped<IGenericRepository<Order>, OrderRepository>();
+            services.AddScoped<IGenericRepository<OrderDetail>, OrderDetailRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderDetailService, OrderDetailService>();
+            services.AddScoped<IServiceProviders, ServiceProviders>();
 
             // Infrastructure service registrations go here
             return services;
