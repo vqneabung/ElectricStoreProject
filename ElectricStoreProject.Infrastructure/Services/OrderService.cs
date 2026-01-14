@@ -52,7 +52,7 @@ namespace ElectricStoreProject.Infrastructure.Services
                 {
                     return new BaseError { Message = "Order not found." };
                 }
-                _unitOfWork.OrderRepository.Remove(order);
+                await _unitOfWork.OrderRepository.SoftRemove(order);
                 return new BaseSuccess { Message = "Order deleted successfully." };
             }
             catch (Exception ex)

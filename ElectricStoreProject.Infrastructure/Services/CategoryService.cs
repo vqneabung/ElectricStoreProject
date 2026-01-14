@@ -54,14 +54,14 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var category = await _unitOfWork.CategoryRepository.GetByIdAsync(c => c.CategoryId == categoryId);
+                var category = await _unitOfWork.CategoryRepository.GetByIdAsync(c => c.CategoryId == categoryId && c.IsActive == true);
 
                 if (category == null)
                 {
                     return new BaseError { Message = "Category not found." };
                 }
 
-                _unitOfWork.CategoryRepository.Remove(category);
+                await _unitOfWork.CategoryRepository.SoftRemove(category);
                 var saved = await _unitOfWork.CategoryRepository.SaveChangesAsync();
 
                 return saved ? new BaseSuccess() : new BaseError { Message = "Failed to delete category." };
@@ -77,7 +77,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
+                var categories = await _unitOfWork.CategoryRepository.GetAllAsync(c => c.IsActive == true);
 
                 return categories.Select(c => new CommonCategoryResponse
                 {
@@ -115,7 +115,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var categoryTask = _unitOfWork.CategoryRepository.GetByIdAsync(c => c.CategoryId == id);
+                var categoryTask = _unitOfWork.CategoryRepository.GetByIdAsync(c => c.CategoryId == id && c.IsActive == true);
                 categoryTask.Wait();
                 var category = categoryTask.Result;
                 if (category == null)

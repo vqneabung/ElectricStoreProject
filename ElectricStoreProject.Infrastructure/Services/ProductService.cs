@@ -63,7 +63,7 @@ namespace ElectricStoreProject.Infrastructure.Services
                         Errors = $"No product found with ID: {productId}"
                     };
                 }
-                _unitOfWork.ProductRepository.Remove(product);
+                await _unitOfWork.ProductRepository.SoftRemove(product);
                 return new BaseSuccess
                 {
                     Message = "Product deleted successfully."

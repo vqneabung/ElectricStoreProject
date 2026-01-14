@@ -47,7 +47,7 @@ namespace ElectricStoreProject.Infrastructure.Services
                 {
                     return new BaseError { Message = "Order detail not found." };
                 }
-                _unitOfWork.OrderDetailRepository.Remove(orderDetail);
+                await _unitOfWork.OrderDetailRepository.SoftRemove(orderDetail);
                 return new BaseSuccess { Message = "Order detail deleted successfully." };
             }
             catch (Exception ex)
@@ -58,7 +58,7 @@ namespace ElectricStoreProject.Infrastructure.Services
 
         public async Task<IEnumerable<CommonOrderDetailResponse>> GetAllOrderDetailAsync()
         {
-            var orderDetails = await _unitOfWork.OrderDetailRepository.GetAllAsync();
+            var orderDetails = await _unitOfWork.OrderDetailRepository.GetAllAsync(od => od.IsActive == true);
 
             return [..orderDetails.Select(od => new CommonOrderDetailResponse{
                 OrderId = od.OrderId,
@@ -66,11 +66,11 @@ namespace ElectricStoreProject.Infrastructure.Services
             })];
         }
 
-        public async Task<OneOf<CommonOrderDetailResponse, BaseError>> GetOrderDetailByIdAsync(Guid OrderDetailId)
+        public async Task<OneOf<CommonOrderDetailResponse, BaseError>> GetOrderDetailByIdAsync(Guid orderDetailId)
         {
             try
             {
-                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(od => od.OrderDetailId == OrderDetailId);
+                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(od => od.OrderDetailId == orderDetailId && od.IsActive == true);
                 if (orderDetail == null)
                 {
                     return new BaseError { Message = "Order detail not found." };
@@ -91,7 +91,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(od => od.OrderDetailId == id);
+                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(od => od.OrderDetailId == id && od.IsActive == true);
                 if (orderDetail == null)
                 {
                     return new BaseError { Message = "Order detail not found." };
