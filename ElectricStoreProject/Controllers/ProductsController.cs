@@ -1,4 +1,5 @@
 ﻿using Common.Extensions;
+using ElectricStoreProject.Application.DTOs.Request;
 using ElectricStoreProject.Application.DTOs.Response;
 using ElectricStoreProject.Application.Interface.Services;
 using Microsoft.AspNetCore.Http;
@@ -44,5 +45,35 @@ namespace ElectricStoreProject.WebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost]
+        public async Task<BaseActionResult<CommonProductResponse>> CreateProduct([FromBody] CommonProductRequest productRequest)
+        {
+            try
+            {
+                var result = await _serviceProviders.ProductService.CreateProductAsync(productRequest);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut("{id}")]
+        public async Task<BaseActionResult<CommonProductResponse>> UpdateProduct(int id, [FromBody] CommonProductRequest productRequest)
+        {
+            try
+            {
+                var result = await _serviceProviders.ProductService.UpdateProductAsync(Guid.Parse(id.ToString()), productRequest);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        
     }
 }

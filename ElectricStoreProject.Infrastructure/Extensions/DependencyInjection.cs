@@ -21,10 +21,10 @@ namespace ElectricStoreProject.Infrastructure.Extensions
         {   
             services.AddBaseServicesWithDbContext<ElectricStoreDBContext>(configuration);
 
-            services.AddScoped<IGenericRepository<Product>, ProductRepository>();
-            services.AddScoped<IGenericRepository<Category>, CategoryRepository>();
-            services.AddScoped<IGenericRepository<Order>, OrderRepository>();
-            services.AddScoped<IGenericRepository<OrderDetail>, OrderDetailRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderDetailRepository, OrderDetailRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IProductService, ProductService>();

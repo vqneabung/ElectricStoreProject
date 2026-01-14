@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Common.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ElectricStoreProject.Domain.Entities
 {
-    public class Order
+    public class Order : CommonEntity
     {
         public Guid OrderId { get; set; }
 

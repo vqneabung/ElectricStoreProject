@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Common.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ElectricStoreProject.Domain.Entities
 {
-    public class Product
+    public class Product : CommonEntity
     {
         public Guid ProductId { get; set; }
 
@@ -19,12 +20,6 @@ namespace ElectricStoreProject.Domain.Entities
         public decimal Price { get; set; }
 
         public int StockQuantity { get; set; }
-
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
-
-        public DateTime LastUpdatedAt { get; set; } = DateTime.Now;
-
-        public bool IsActive { get; set; }
 
         public virtual Category? Categories { get; set; }
 
