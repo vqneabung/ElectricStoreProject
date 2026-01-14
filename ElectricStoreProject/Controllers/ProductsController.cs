@@ -74,6 +74,19 @@ namespace ElectricStoreProject.WebApi.Controllers
             }
         }
 
-        
+        [HttpDelete("{id}")]
+        public async Task<BaseActionResult<CommonProductResponse>> DeleteProduct(int id)
+        {
+            try
+            {
+                var result = await _serviceProviders.ProductService.DeleteProductAsync(Guid.Parse(id.ToString()));
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

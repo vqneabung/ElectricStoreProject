@@ -28,5 +28,6 @@ namespace ElectricStoreProject.Infrastructure.Services
         public IProductService ProductService => _productService;
 
         public IOrderService OrderService => _orderService;
+
     }
 }
