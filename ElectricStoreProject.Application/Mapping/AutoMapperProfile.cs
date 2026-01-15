@@ -14,8 +14,9 @@ namespace ElectricStoreProject.Application.Mapping
         {
             CreateMap<Category, CommonCategoryResponse>().ReverseMap();
             CreateMap<Product, CommonProductResponse>().ReverseMap();
-            CreateMap<Order, CreateOrderRequest>().ForMember(des => des.CommonOrderDetailRequest,
-                opt => opt.MapFrom(src => src.OrderDetails)).ReverseMap();
+            CreateMap<OrderDetail, CommonOrderDetailResponse>().ReverseMap();
+            CreateMap<Order, CommonOrderResponse>().ReverseMap();
+      
         }
 
     }
