@@ -29,12 +29,11 @@ namespace ElectricStoreProject.Infrastructure.Services
             {
 
 
-                await _unitOfWork.OrderDetailRepository.AddAsync(new()
+                await _unitOfWork.OrderDetailRepository.AddAsyncWithSave(new()
                 {
                     OrderId = createBlogRequest.OrderId,
                     Quantity = createBlogRequest.Quantity
                 });
-
                 return new BaseSuccess { Message = "Order detail created successfully." };
             }
             catch (Exception ex)

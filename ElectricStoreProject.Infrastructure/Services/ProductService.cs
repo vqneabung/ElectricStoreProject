@@ -28,7 +28,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                await _unitOfWork.ProductRepository.AddAsync(new Product
+                await _unitOfWork.ProductRepository.AddAsyncWithSave(new Product
                 {
                     UrlImage = createProductRequest.UrlImage,
                     Name = createProductRequest.Name,

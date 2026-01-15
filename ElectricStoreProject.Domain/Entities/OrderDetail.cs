@@ -10,12 +10,15 @@ namespace ElectricStoreProject.Domain.Entities
     {
         public Guid OrderId { get; set; }
 
+        public Guid ProductId { get; set; }
+
         public int Quantity { get; set; }
 
-        public IEnumerable<Product>? Products { get; set; }
+        [ForeignKey("ProductId")]
+        public Product? Product { get; set; }
 
         [ForeignKey("OrderId")]
-        public Order? Orders { get; set; }
+        public Order? Order { get; set; }
 
     }
 }

@@ -29,12 +29,13 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                await _unitOfWork.OrderRepository.AddAsync(new()
+                await _unitOfWork.OrderRepository.AddAsyncWithSave(new()
                 {
                     CustomerId = createOrderRequest.CustomerId,
                     Status = createOrderRequest.Status,
                     OrderDetails = createOrderRequest.CommonOrderDetailRequest?.ConvertAll(od => new OrderDetail
                     {
+                        ProductId = od.ProductId,
                         Quantity = od.Quantity,
                     })
                 });
