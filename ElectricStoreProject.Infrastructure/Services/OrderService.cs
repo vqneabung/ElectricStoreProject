@@ -47,7 +47,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var order = await _unitOfWork.OrderRepository.GetByIdAsync(o => o.OrderId == orderId);
+                var order = await _unitOfWork.OrderRepository.GetByIdAsync(o => o.Id == orderId);
                 if (order == null)
                 {
                     return new BaseError { Message = "Order not found." };
@@ -79,7 +79,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var order = await _unitOfWork.OrderRepository.GetByIdAsync(o => o.OrderId == orderId, include: o => o.Include(o => o.OrderDetails!));
+                var order = await _unitOfWork.OrderRepository.GetByIdAsync(o => o.Id == orderId, include: o => o.Include(o => o.OrderDetails!));
                 if (order == null)
                 {
                     return new BaseError { Message = "Order not found." };
@@ -99,7 +99,7 @@ namespace ElectricStoreProject.Infrastructure.Services
 
         public async Task<IEnumerable<CommonOrderResponse>> GetOrdersByOrderAsync(Guid OrderId)
         {
-            var orders = await _unitOfWork.OrderRepository.GetAllAsync(o => o.OrderId == OrderId, include: o => o.Include(o => o.OrderDetails!));
+            var orders = await _unitOfWork.OrderRepository.GetAllAsync(o => o.Id == OrderId, include: o => o.Include(o => o.OrderDetails!));
             return orders.Select(o => new CommonOrderResponse
             {
                 CustomerId = o.CustomerId,
@@ -111,7 +111,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var order = await _unitOfWork.OrderRepository.GetByIdAsync(o => o.OrderId == id);
+                var order = await _unitOfWork.OrderRepository.GetByIdAsync(o => o.Id == id);
                 if (order == null)
                 {
                     return new BaseError { Message = "Order not found." };

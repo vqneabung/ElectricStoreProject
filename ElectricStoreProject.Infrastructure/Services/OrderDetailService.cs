@@ -42,7 +42,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(od => od.OrderDetailId == orderDetailId);
+                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(od => od.Id == orderDetailId);
                 if (orderDetail == null)
                 {
                     return new BaseError { Message = "Order detail not found." };
@@ -70,7 +70,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(od => od.OrderDetailId == orderDetailId && od.IsActive == true);
+                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(od => od.Id == orderDetailId && od.IsActive == true);
                 if (orderDetail == null)
                 {
                     return new BaseError { Message = "Order detail not found." };
@@ -91,7 +91,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(od => od.OrderDetailId == id && od.IsActive == true);
+                var orderDetail = await _unitOfWork.OrderDetailRepository.GetByIdAsync(od => od.Id == id && od.IsActive == true);
                 if (orderDetail == null)
                 {
                     return new BaseError { Message = "Order detail not found." };

@@ -1,8 +1,7 @@
 ﻿namespace ElectricStoreProject.Application.DTOs.Response
 {
-    public class CommonOrderDetailResponse
+    public class CommonOrderDetailResponse : CommonBaseResponse
     {
-        public Guid OrderDetailId { get; set; }
 
         public Guid OrderId { get; set; }
 

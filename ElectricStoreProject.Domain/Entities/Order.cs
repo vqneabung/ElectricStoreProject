@@ -7,7 +7,6 @@ namespace ElectricStoreProject.Domain.Entities
 {
     public class Order : CommonEntity
     {
-        public Guid OrderId { get; set; }
 
         public Guid CustomerId { get; set; }
 

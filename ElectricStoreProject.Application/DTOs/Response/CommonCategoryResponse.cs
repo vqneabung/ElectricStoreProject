@@ -4,10 +4,8 @@ using System.Text;
 
 namespace ElectricStoreProject.Application.DTOs.Response
 {
-    public class CommonCategoryResponse
+    public class CommonCategoryResponse : CommonBaseResponse
     {
-        public Guid? CategoryId { get; set; }
-
         public string? Name { get; set; }
     }
 }

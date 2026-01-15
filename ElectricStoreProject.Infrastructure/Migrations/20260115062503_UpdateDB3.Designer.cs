@@ -4,6 +4,7 @@ using ElectricStoreProject.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ElectricStoreProject.Infrastructure.Migrations
 {
     [DbContext(typeof(ElectricStoreDBContext))]
-    partial class ElectricStoreDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260115062503_UpdateDB3")]
+    partial class UpdateDB3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

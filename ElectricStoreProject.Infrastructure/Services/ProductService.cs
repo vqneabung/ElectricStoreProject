@@ -54,7 +54,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var product = await _unitOfWork.ProductRepository.GetByIdAsync(p => p.ProductId == productId);
+                var product = await _unitOfWork.ProductRepository.GetByIdAsync(p => p.Id == productId);
                 if (product == null)
                 {
                     return new BaseError
@@ -88,7 +88,7 @@ namespace ElectricStoreProject.Infrastructure.Services
                 {
                     UrlImage = p.UrlImage,
                     Name = p.Name,
-                    CategoryId = p.Categories!.CategoryId,
+                    CategoryId = p.Categories!.Id,
                     Description = p.Description,
                     Price = p.Price,
                     StockQuantity = p.StockQuantity
@@ -104,7 +104,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var product = await _unitOfWork.ProductRepository.GetByIdAsync(p => p.ProductId == productId, include: p => p.Include(p => p.Categories!));
+                var product = await _unitOfWork.ProductRepository.GetByIdAsync(p => p.Id == productId, include: p => p.Include(p => p.Categories!));
                 if (product == null)
                 {
                     return new BaseError
@@ -117,7 +117,7 @@ namespace ElectricStoreProject.Infrastructure.Services
                 {
                     UrlImage = product.UrlImage,
                     Name = product.Name,
-                    CategoryId = product.Categories!.CategoryId,
+                    CategoryId = product.Categories!.Id,
                     Description = product.Description,
                     Price = product.Price,
                     StockQuantity = product.StockQuantity
@@ -140,7 +140,7 @@ namespace ElectricStoreProject.Infrastructure.Services
             {
                 UrlImage = p.UrlImage,
                 Name = p.Name,
-                CategoryId = p.Categories!.CategoryId,
+                CategoryId = p.Categories!.Id,
                 Description = p.Description,
                 Price = p.Price,
                 StockQuantity = p.StockQuantity
@@ -151,7 +151,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var product = await _unitOfWork.ProductRepository.GetByIdAsync(p => p.ProductId == id);
+                var product = await _unitOfWork.ProductRepository.GetByIdAsync(p => p.Id == id);
                 if (product == null)
                 {
                     return new BaseError

@@ -1,6 +1,6 @@
 ﻿namespace ElectricStoreProject.Application.DTOs.Response
 {
-    public class CommonProductResponse
+    public class CommonProductResponse : CommonBaseResponse
     {
         public string? UrlImage { get; set; }
 

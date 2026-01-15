@@ -54,7 +54,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var category = await _unitOfWork.CategoryRepository.GetByIdAsync(c => c.CategoryId == categoryId && c.IsActive == true);
+                var category = await _unitOfWork.CategoryRepository.GetByIdAsync(c => c.Id == categoryId && c.IsActive == true);
 
                 if (category == null)
                 {
@@ -81,7 +81,11 @@ namespace ElectricStoreProject.Infrastructure.Services
 
                 return categories.Select(c => new CommonCategoryResponse
                 {
-                    Name = c.Name
+                    Id = c.Id,
+                    Name = c.Name,
+                    CreatedAt = c.CreatedAt,
+                    UpdatedAt = c.UpdatedAt,
+
                 });
 
             }
@@ -95,7 +99,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var category = await _unitOfWork.CategoryRepository.GetByIdAsync(c => c.CategoryId == categoryId);
+                var category = await _unitOfWork.CategoryRepository.GetByIdAsync(c => c.Id == categoryId);
                 return category != null
                     ? new CommonCategoryResponse
                     {
@@ -115,7 +119,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var categoryTask = _unitOfWork.CategoryRepository.GetByIdAsync(c => c.CategoryId == id && c.IsActive == true);
+                var categoryTask = _unitOfWork.CategoryRepository.GetByIdAsync(c => c.Id == id && c.IsActive == true);
                 categoryTask.Wait();
                 var category = categoryTask.Result;
                 if (category == null)
