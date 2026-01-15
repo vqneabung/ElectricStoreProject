@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using AutoMapper;
+using Common;
 using ElectricStoreProject.Application.DTOs.Request;
 using ElectricStoreProject.Application.DTOs.Response;
 using ElectricStoreProject.Application.Interface.Repositories;
@@ -14,16 +15,20 @@ namespace ElectricStoreProject.Infrastructure.Services
     public class OrderDetailService : IOrderDetailService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public OrderDetailService(IUnitOfWork unitOfWork)
+        public OrderDetailService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<OneOf<BaseSuccess, BaseError>> CreateOrderDetailAsync(CreateOrderDetailRequest createBlogRequest)
         {
             try
             {
+
+
                 await _unitOfWork.OrderDetailRepository.AddAsync(new()
                 {
                     OrderId = createBlogRequest.OrderId,
@@ -60,10 +65,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             var orderDetails = await _unitOfWork.OrderDetailRepository.GetAllAsync(od => od.IsActive == true);
 
-            return [..orderDetails.Select(od => new CommonOrderDetailResponse{
-                OrderId = od.OrderId,
-                Quantity = od.Quantity
-            })];
+            return _mapper.Map<IEnumerable<CommonOrderDetailResponse>>(orderDetails);
         }
 
         public async Task<OneOf<CommonOrderDetailResponse, BaseError>> GetOrderDetailByIdAsync(Guid orderDetailId)
@@ -75,11 +77,7 @@ namespace ElectricStoreProject.Infrastructure.Services
                 {
                     return new BaseError { Message = "Order detail not found." };
                 }
-                return new CommonOrderDetailResponse
-                {
-                    OrderId = orderDetail.OrderId,
-                    Quantity = orderDetail.Quantity
-                };
+                return _mapper.Map<CommonOrderDetailResponse>(orderDetail);
             }
             catch (Exception ex)
             {

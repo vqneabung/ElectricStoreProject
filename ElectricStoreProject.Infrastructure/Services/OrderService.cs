@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using AutoMapper;
+using Common;
 using ElectricStoreProject.Application.DTOs.Request;
 using ElectricStoreProject.Application.DTOs.Response;
 using ElectricStoreProject.Application.Interface.Repositories;
@@ -16,10 +17,12 @@ namespace ElectricStoreProject.Infrastructure.Services
     {
 
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public OrderService(IUnitOfWork unitOfWork)
+        public OrderService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<OneOf<BaseSuccess, BaseError>> CreateOrderAsync(CreateOrderRequest createOrderRequest)
@@ -64,15 +67,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         public async Task<IEnumerable<CommonOrderResponse>> GetAllOrderAsync()
         {
             var orders = await _unitOfWork.OrderRepository.GetAllAsync(include: o => o.Include(o => o.OrderDetails!));
-            return orders.Select(o => new CommonOrderResponse
-            {
-                CustomerId = o.CustomerId,
-                Status = o.Status,
-                OrderDetails = o.OrderDetails?.Select(od => new CommonOrderDetailResponse
-                {
-                    Quantity = od.Quantity,
-                }) ?? new List<CommonOrderDetailResponse>()
-            });
+            return _mapper.Map<IEnumerable<CommonOrderResponse>>(orders);
         }
 
         public async Task<OneOf<CommonOrderResponse, BaseError>> GetOrderByIdAsync(Guid orderId)
@@ -84,12 +79,7 @@ namespace ElectricStoreProject.Infrastructure.Services
                 {
                     return new BaseError { Message = "Order not found." };
                 }
-                var orderRequest = new CommonOrderResponse
-                {
-                    CustomerId = order.CustomerId,
-                    Status = order.Status,
-                };
-                return orderRequest;
+                return _mapper.Map<CommonOrderResponse>(order);
             }
             catch (Exception ex)
             {
@@ -100,11 +90,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         public async Task<IEnumerable<CommonOrderResponse>> GetOrdersByOrderAsync(Guid OrderId)
         {
             var orders = await _unitOfWork.OrderRepository.GetAllAsync(o => o.Id == OrderId, include: o => o.Include(o => o.OrderDetails!));
-            return orders.Select(o => new CommonOrderResponse
-            {
-                CustomerId = o.CustomerId,
-                Status = o.Status,
-            });
+            return _mapper.Map<IEnumerable<CommonOrderResponse>>(orders);
         }
 
         public async Task<OneOf<BaseSuccess, BaseError>> UpdateOrderAsync(Guid id, CommonOrderRequest updateOrderRequest)

@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using AutoMapper;
+using Common;
 using ElectricStoreProject.Application.DTOs.Request;
 using ElectricStoreProject.Application.DTOs.Response;
 using ElectricStoreProject.Application.Interface.Repositories;
@@ -15,10 +16,12 @@ namespace ElectricStoreProject.Infrastructure.Services
     public class ProductService : IProductService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ProductService(IUnitOfWork unitOfWork)
+        public ProductService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<OneOf<BaseSuccess, BaseError>> CreateProductAsync(CommonProductRequest createProductRequest)
@@ -84,15 +87,7 @@ namespace ElectricStoreProject.Infrastructure.Services
             try
             {
                 var products = await _unitOfWork.ProductRepository.GetAllAsync(include: p => p.Include(p => p.Categories!));
-                return products.Select(p => new CommonProductResponse
-                {
-                    UrlImage = p.UrlImage,
-                    Name = p.Name,
-                    CategoryId = p.Categories!.Id,
-                    Description = p.Description,
-                    Price = p.Price,
-                    StockQuantity = p.StockQuantity
-                }).ToList();
+                return _mapper.Map<IEnumerable<CommonProductResponse>>(products);
             }
             catch (Exception ex)
             {
@@ -113,15 +108,7 @@ namespace ElectricStoreProject.Infrastructure.Services
                         Errors = $"No product found with ID: {productId}"
                     };
                 }
-                return new CommonProductRequest
-                {
-                    UrlImage = product.UrlImage,
-                    Name = product.Name,
-                    CategoryId = product.Categories!.Id,
-                    Description = product.Description,
-                    Price = product.Price,
-                    StockQuantity = product.StockQuantity
-                };
+                return _mapper.Map<CommonProductRequest>(product);
             }
             catch (Exception ex)
             {
@@ -136,15 +123,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         public async Task<IEnumerable<CommonProductRequest>> GetProductsByCategoryAsync(Guid categoryId)
         {
             var products = await _unitOfWork.ProductRepository.GetAllAsync(p => p.CategoryId == categoryId, include: p => p.Include(p => p.Categories!));
-            return products.Select(p => new CommonProductRequest
-            {
-                UrlImage = p.UrlImage,
-                Name = p.Name,
-                CategoryId = p.Categories!.Id,
-                Description = p.Description,
-                Price = p.Price,
-                StockQuantity = p.StockQuantity
-            }).ToList();
+            return _mapper.Map<IEnumerable<CommonProductRequest>>(products);
         }
 
         public async Task<OneOf<BaseSuccess, BaseError>> UpdateProductAsync(Guid id, CommonProductRequest updateProductRequest)

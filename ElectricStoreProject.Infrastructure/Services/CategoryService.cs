@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using AutoMapper;
+using Common;
 using Common.Repository;
 using ElectricStoreProject.Application.DTOs.Request;
 using ElectricStoreProject.Application.DTOs.Response;
@@ -17,10 +18,12 @@ namespace ElectricStoreProject.Infrastructure.Services
     {
 
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public CategoryService(IUnitOfWork unitOfWork)
+        public CategoryService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task<OneOf<BaseSuccess, BaseError>> CreateCategoryAsync(CommonCategoryRequest createCategoryRequest)
@@ -37,7 +40,7 @@ namespace ElectricStoreProject.Infrastructure.Services
                 var saved = await _unitOfWork.CategoryRepository.SaveChangesAsync();
                 if (saved)
                 {
-                    return new BaseSuccess();
+                    return new BaseSuccess(category.Id.ToString());
                 }
                 else
                 {
@@ -54,7 +57,7 @@ namespace ElectricStoreProject.Infrastructure.Services
         {
             try
             {
-                var category = await _unitOfWork.CategoryRepository.GetByIdAsync(c => c.Id == categoryId && c.IsActive == true);
+                var category = await _unitOfWork.CategoryRepository.GetByIdAsync(c => c.Id == categoryId);
 
                 if (category == null)
                 {
@@ -78,15 +81,7 @@ namespace ElectricStoreProject.Infrastructure.Services
             try
             {
                 var categories = await _unitOfWork.CategoryRepository.GetAllAsync(c => c.IsActive == true);
-
-                return categories.Select(c => new CommonCategoryResponse
-                {
-                    Id = c.Id,
-                    Name = c.Name,
-                    CreatedAt = c.CreatedAt,
-                    UpdatedAt = c.UpdatedAt,
-
-                });
+                return _mapper.Map<IEnumerable<CommonCategoryResponse>>(categories);
 
             }
             catch (Exception ex)
@@ -101,10 +96,7 @@ namespace ElectricStoreProject.Infrastructure.Services
             {
                 var category = await _unitOfWork.CategoryRepository.GetByIdAsync(c => c.Id == categoryId);
                 return category != null
-                    ? new CommonCategoryResponse
-                    {
-                        Name = category.Name
-                    }
+                    ? _mapper.Map<CommonCategoryResponse>(category)
                     : new BaseError { Message = "Category not found." };
 
             }

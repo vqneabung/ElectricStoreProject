@@ -38,7 +38,7 @@ namespace ElectricStoreProject.WebApi.Controllers
             try
             {
                 var result = await _serviceProviders.ProductService.GetProductByIdAsync(Guid.Parse(id.ToString()));
-                return Ok(result);
+                return result.Match(success => { return Ok(success); }, failed => { return BadRequest(failed); });
             }
             catch (Exception ex)
             {
@@ -52,7 +52,7 @@ namespace ElectricStoreProject.WebApi.Controllers
             try
             {
                 var result = await _serviceProviders.ProductService.CreateProductAsync(productRequest);
-                return Ok(result);
+                return result.Match(success => { return Ok(success); }, failed => { return BadRequest(failed); });
             }
             catch (Exception ex)
             {
@@ -66,7 +66,7 @@ namespace ElectricStoreProject.WebApi.Controllers
             try
             {
                 var result = await _serviceProviders.ProductService.UpdateProductAsync(Guid.Parse(id.ToString()), productRequest);
-                return Ok(result);
+                return result.Match(success => { return Ok(success); }, failed => { return BadRequest(failed); });
             }
             catch (Exception ex)
             {
@@ -80,7 +80,7 @@ namespace ElectricStoreProject.WebApi.Controllers
             try
             {
                 var result = await _serviceProviders.ProductService.DeleteProductAsync(Guid.Parse(id.ToString()));
-                return Ok(result);
+                return result.Match(success => { return Ok(success); }, failed => { return BadRequest(failed); });
             }
             catch (Exception ex)
             {

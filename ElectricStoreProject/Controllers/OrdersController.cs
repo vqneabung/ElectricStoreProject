@@ -39,7 +39,7 @@ namespace ElectricStoreProject.WebApi.Controllers
             try
             {
                 var result = await _serviceProviders.OrderService.GetOrderByIdAsync(Guid.Parse(id.ToString()));
-                return Ok(result);
+                return result.Match(success => { return Ok(success); }, failed => { return BadRequest(failed); });
             }
             catch (Exception ex)
             {
@@ -54,7 +54,13 @@ namespace ElectricStoreProject.WebApi.Controllers
             {
                 // Implementation for creating an order goes here
                 var result = await _serviceProviders.OrderService.CreateOrderAsync(createOrderRequest);
-                return Ok(result);
+                return result.Match(success =>
+                {
+                    return Ok(success);
+                }, failed =>
+                {
+                    return BadRequest(failed);
+                });
             }
             catch (Exception ex)
             {
@@ -68,7 +74,13 @@ namespace ElectricStoreProject.WebApi.Controllers
             try
             {
                 var result = await _serviceProviders.OrderService.DeleteOrderAsync(Guid.Parse(id.ToString()));
-                return Ok(result);
+                return result.Match(success =>
+                {
+                    return Ok(success);
+                }, failed =>
+                {
+                    return BadRequest(failed);
+                });
             }
             catch (Exception ex)
             {
