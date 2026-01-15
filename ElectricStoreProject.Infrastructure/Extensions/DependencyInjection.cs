@@ -2,6 +2,7 @@
 using Common.Repository;
 using ElectricStoreProject.Application.Interface.Repositories;
 using ElectricStoreProject.Application.Interface.Services;
+using ElectricStoreProject.Application.Mapping;
 using ElectricStoreProject.Domain.Entities;
 using ElectricStoreProject.Infrastructure.Data;
 using ElectricStoreProject.Infrastructure.Repositories;
@@ -20,6 +21,8 @@ namespace ElectricStoreProject.Infrastructure.Extensions
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {   
             services.AddBaseServicesWithDbContext<ElectricStoreDBContext>(configuration);
+
+            services.AddAutoMapper(cfg => { }, typeof(AutoMapperProfile));
 
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
