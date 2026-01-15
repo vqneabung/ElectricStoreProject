@@ -20,7 +20,7 @@ namespace ElectricStoreProject.Infrastructure.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<OneOf<BaseSuccess, BaseError>> CreateOrderDetailAsync(CommonOrderDetailRequest createBlogRequest)
+        public async Task<OneOf<BaseSuccess, BaseError>> CreateOrderDetailAsync(CreateOrderDetailRequest createBlogRequest)
         {
             try
             {
@@ -96,7 +96,6 @@ namespace ElectricStoreProject.Infrastructure.Services
                 {
                     return new BaseError { Message = "Order detail not found." };
                 }
-                orderDetail.OrderId = updateBlogRequest.OrderId;
                 orderDetail.Quantity = updateBlogRequest.Quantity;
                 _unitOfWork.OrderDetailRepository.Update(orderDetail);
                 return new BaseSuccess { Message = "Order detail updated successfully." };

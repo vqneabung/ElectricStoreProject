@@ -16,7 +16,7 @@ namespace ElectricStoreProject.Application.Interface.Services
 
         Task<OneOf<BaseSuccess, BaseError>> UpdateOrderDetailAsync(Guid id, CommonOrderDetailRequest updateOrderDetailRequest);
 
-        Task<OneOf<BaseSuccess, BaseError>> CreateOrderDetailAsync(CommonOrderDetailRequest createOrderDetailRequest);
+        Task<OneOf<BaseSuccess, BaseError>> CreateOrderDetailAsync(CreateOrderDetailRequest createOrderDetailRequest);
 
         Task<OneOf<BaseSuccess, BaseError>> DeleteOrderDetailAsync(Guid orderDetailId);
     }
