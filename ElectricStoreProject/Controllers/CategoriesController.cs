@@ -1,5 +1,6 @@
 ﻿using Common;
 using Common.Extensions;
+using ElectricStoreProject.Application.DTOs.Request;
 using ElectricStoreProject.Application.DTOs.Response;
 using ElectricStoreProject.Application.Interface.Services;
 using Microsoft.AspNetCore.Http;
@@ -38,6 +39,20 @@ namespace ElectricStoreProject.WebApi.Controllers
             try
             {
                 var result = await _serviceProviders.CategoryService.GetCategoryByIdAsync(Guid.Parse(id.ToString()));
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public async Task<BaseActionResult<CommonCategoryResponse>> CreateCategory(CommonCategoryRequest categoryRequest)
+        {
+            try
+            {
+                var result = await _serviceProviders.CategoryService.CreateCategoryAsync(categoryRequest);
                 return Ok(result);
             }
             catch (Exception ex)
